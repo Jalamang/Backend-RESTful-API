@@ -10,13 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User implements Serializable {
-
+public class Product implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id", unique=true, nullable=false)
+	@Column(name = "product_id", unique=true, nullable=false)
 	private Long id;
 
 }
