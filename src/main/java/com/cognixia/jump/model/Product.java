@@ -5,19 +5,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 
 @Entity
 public class Product implements Serializable {
@@ -29,11 +28,11 @@ public class Product implements Serializable {
 	@Column(name = "product_id", unique=true, nullable=false)
 	private Long id;
 	
-	@Column(nullable = false )
+	@Column(nullable = false, unique = true)
 	private String name;
 	
 	@Column(nullable = false )
-	private String price;
+	private Double price;
 	
 	@Column(nullable = false )
 	private String descritpion;
@@ -41,28 +40,19 @@ public class Product implements Serializable {
 	@Column(nullable = false )
 	private Date created_at;
 	
-	
 	@Column(nullable = false )
 	private Date modified_at;
 
 	
-	//Many To Many with OrderItem
-	@JsonIgnoreProperties("products")
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(
-			name = "order_product",
-			joinColumns = {@JoinColumn(name = "product_id")},
-			inverseJoinColumns = {@JoinColumn(name = "order_id")}
-	)
-	private Set<OrderItem> orders = new HashSet<>();
+//	//One to Many with OrderItem
+//		@JsonIgnoreProperties("product")
+//		@OneToMany(mappedBy = "product",fetch = FetchType.EAGER)
+//	@Transient	
+//	private Set<OrderItem> orders = new HashSet<>();
 
-	public Product() {
-		
-	}
-			
-	
+	public Product() {}
 
-	public Product(Long id, String name, String price, String descritpion, Date created_at, Date modified_at,
+	public Product(Long id, String name, Double price, String descritpion, Date created_at, Date modified_at,
 			Set<OrderItem> orders) {
 		super();
 		this.id = id;
@@ -71,11 +61,9 @@ public class Product implements Serializable {
 		this.descritpion = descritpion;
 		this.created_at = created_at;
 		this.modified_at = modified_at;
-		this.orders = orders;
+//		this.orders = orders;
 	}
-
-
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -92,11 +80,11 @@ public class Product implements Serializable {
 		this.name = name;
 	}
 
-	public String getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
@@ -124,12 +112,23 @@ public class Product implements Serializable {
 		this.modified_at = modified_at;
 	}
 
+//	public Set<OrderItem> getOrders() {
+//		return orders;
+//	}
+//
+//	public void setOrders(Set<OrderItem> orders) {
+//		this.orders = orders;
+//	}
+
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", descritpion=" + descritpion
 				+ ", created_at=" + created_at + ", modified_at=" + modified_at + "]";
 	}
-	
-	
 
+
+
+
+
+	
 }

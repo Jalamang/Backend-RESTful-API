@@ -19,52 +19,52 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
-public class Address implements Serializable{
+public class Address implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 //	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "address_id")
 	private Long id;
-	
+
 //	@Schema(description = "Kudang Primary School", example = "Primary School", required = true)
-	@Size(min = 1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(nullable = false, length = 10)
 	private String streetNumber;
-	
+
 //	@Schema(description = "Kudang Primary School", example = "Primary School", required = true)
-	@Size(min = 1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(nullable = false, length = 30)
 	private String streetName;
-	
+
 //	@Schema(description = "Kudang Primary School", example = "Primary School", required = true)
-	@Size(min = 1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(nullable = true, length = 10)
 	private String suiteNumber;
-	
+
 //	@Schema(description = "Kudang Primary School", example = "Primary School", required = true)
-	@Size(min = 1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(nullable = false, length = 30)
 	private String city;
-	
+
 //	@Schema(description = "Kudang Primary School", example = "Primary School", required = true)
-	@Size(min = 1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(nullable = true, length = 30)
 	private String stateOrProvince;
-	
+
 	@Column(nullable = false, length = 10)
 	private String zipPostalCode;
-	
+
 	@Column(nullable = false, length = 30)
 	private String country;
-	
-	// Link for the 1 to Many of student
+
+	// Link for the 1 to Many of user
 	@JsonIgnoreProperties("address")
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "address", cascade = CascadeType.ALL)
 	private Set<User> users = new HashSet<>();
-//	targetEntity = Student.class, 
+
 	public Address() {
 		this.id = -1L;
 		this.streetNumber = "N/A";
@@ -91,7 +91,6 @@ public class Address implements Serializable{
 		this.users = users;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -164,11 +163,15 @@ public class Address implements Serializable{
 		this.users = users;
 	}
 
+	public void addUser(User user) {
+		this.users.add(user);
+	}
+
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", streetNumber=" + streetNumber + ", streetName=" + streetName + ", suiteNumber="
 				+ suiteNumber + ", city=" + city + ", stateOrProvince=" + stateOrProvince + ", zipOrPostalCode="
 				+ zipPostalCode + ", country=" + country + ", students=" + users + "]";
 	}
-	
+
 }

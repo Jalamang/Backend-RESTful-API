@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.cognixia.jump.model.OrderItem;
 
 @Repository
-public interface OrderRepository extends JpaRepository<OrderItem, Long> {
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
 }
