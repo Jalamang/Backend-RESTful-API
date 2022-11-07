@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -41,6 +42,7 @@ public class Product implements Serializable {
 	private Date created_at;
 	
 	@Column(nullable = false )
+//	@Pattern(regexp = "^[0-9]{4}-(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])$")
 	private Date modified_at;
 
 	@Column(nullable = true )
@@ -64,6 +66,7 @@ public class Product implements Serializable {
 		this.quantity = quantity;
 		this.descritpion = descritpion;
 		this.created_at = created_at;
+		
 		this.modified_at = modified_at;
 //		this.orders = orders;
 	}

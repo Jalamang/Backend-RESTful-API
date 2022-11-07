@@ -1,6 +1,5 @@
 package com.cognixia.jump.controller;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.cognixia.jump.repository.UserRepository;
 import com.cognixia.jump.service.UserService;
-import org.springframework.http.MediaType;
 
 //Annotate the test class with a corresponding SRC code Class
 @ExtendWith(SpringExtension.class)
@@ -42,18 +38,45 @@ public class UserControllerTest {
 	@Autowired
 	MockMvc mockMvc;
 	
-	@Test
-	public void testGetAllUsers() throws Exception {
+	
+//	@WithMockUser(username="johnm")
 
-		String uri = "/users/all";
+	
+//	@Test
+//	void testGetAllUsers() throws Exception {
+//
+//		// test data returned in the body
+//		Set<OrderItem> orders = new TreeSet<OrderItem>();
+//		
+//
+////		User user = new User(1L, "johnm", "password", "Lamin", "Sarr", "user1@gmail.com", null, true, null, orders);
+//
+//		Address address = new Address(1L, "507", "1 Leman St", "207", "NYC", "Bronx", "1001-010", "USA", null);
+//		TreeSet<User> users = new TreeSet<User>();
+//
+//		users.add( new User(1L, "johnm", "password", "Lamin", "Sarr", "user1@gmail.com", null, true, address, orders));
+//		
+//
+//		String uri = "/users/all";
+//
+//	
+//		when(service.getAllUsers()).thenReturn(users);
+////
+////		mockMvc.perform(get(uri)).andDo(print()).andExpect(status().isOk())
+////				.andExpect(jsonPath("$.length()").value(students.size())) // check size of resulting array
+////				.andExpect(jsonPath("$[0].id").value(students.get(0).getId())) // checks if first student has id = 1
+////				.andExpect(jsonPath("$[1].lastName").value(students.get(1).getLastName())) // checks second student has
+////																							// lastName = platypus
+////				.andExpect(jsonPath("$[0].user.id").value(students.get(0).getUser().getId()));
+////
+////		// verify can check how many times a method is called during a test
+////		verify(service, times(1)).getAllStudents(); // check this method is only called once
+////
+////		// make sure no more methods from service are being called
+////		verifyNoMoreInteractions(service);
+//
+//	}
 
-		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
-				.andReturn();
-
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-
-	}
 	
 	
 }
