@@ -43,6 +43,9 @@ public class Product implements Serializable {
 	@Column(nullable = false )
 	private Date modified_at;
 
+	@Column(nullable = true )
+	private int quantity = 1;
+
 	
 //	//One to Many with OrderItem
 //		@JsonIgnoreProperties("product")
@@ -53,11 +56,12 @@ public class Product implements Serializable {
 	public Product() {}
 
 	public Product(Long id, String name, Double price, String descritpion, Date created_at, Date modified_at,
-			Set<OrderItem> orders) {
+			int quantity, Set<OrderItem> orders) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
+		this.quantity = quantity;
 		this.descritpion = descritpion;
 		this.created_at = created_at;
 		this.modified_at = modified_at;
@@ -119,6 +123,14 @@ public class Product implements Serializable {
 //	public void setOrders(Set<OrderItem> orders) {
 //		this.orders = orders;
 //	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
 	@Override
 	public String toString() {

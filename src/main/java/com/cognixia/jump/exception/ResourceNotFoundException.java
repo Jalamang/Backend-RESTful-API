@@ -13,8 +13,3 @@ public class ResourceNotFoundException extends Exception {
 	}
 
 }
-
-//InvalidArgumentException
-//DuplicateResourceException
-//InvalidBirthDateException
-//DeletionSchemaViolationException

@@ -6,12 +6,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.cognixia.jump.exception.OutOfStockException;
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.OrderItem;
 import com.cognixia.jump.model.Product;
@@ -19,7 +18,6 @@ import com.cognixia.jump.model.User;
 import com.cognixia.jump.repository.OrderItemRepository;
 import com.cognixia.jump.repository.ProductRepository;
 import com.cognixia.jump.repository.UserRepository;
-import com.cognixia.jump.service.MyUserDetailsService;
 import com.cognixia.jump.service.OrderItemService;
 
 @Service
@@ -35,10 +33,12 @@ public class OrderItemServiceImplementation implements OrderItemService {
 	UserRepository userRepo;
 
 //	@Override
-	public ResponseEntity<OrderItem> addProductToOrderItem(Long pid, int qty) throws ResourceNotFoundException {
+	public ResponseEntity<OrderItem> addProductToOrderItem(Long pid, int qty) throws ResourceNotFoundException, OutOfStockException {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
 		String username = "";
+		
 		if (principal instanceof UserDetails) {
 		 username = ((UserDetails)principal).getUsername();
 		} else {
@@ -47,6 +47,14 @@ public class OrderItemServiceImplementation implements OrderItemService {
 		Optional<User> currentUser = userRepo.findByUsername(username);
 
 		Optional<Product> product = productRepo.findById(pid);
+		
+		if(qty > product.get().getQuantity()) {
+			
+			throw new OutOfStockException(product.get().getName() + " is out of stock ");
+		}
+		
+		qty *=  product.get().getPrice();
+		
 
 		if ((currentUser.isPresent() && product.isPresent())) {
 			return ResponseEntity.status(201).body(
