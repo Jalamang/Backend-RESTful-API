@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.ResourceNotFoundException;
 import com.cognixia.jump.model.Address;
-import com.cognixia.jump.model.User;
 import com.cognixia.jump.service.AddressService;
 
 import io.swagger.v3.oas.annotations.Operation;

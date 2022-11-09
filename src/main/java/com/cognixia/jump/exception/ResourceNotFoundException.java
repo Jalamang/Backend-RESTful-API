@@ -11,5 +11,14 @@ public class ResourceNotFoundException extends Exception {
 	public ResourceNotFoundException(Object resource) {
 		super("Resource of: " + resource + " not found.");
 	}
+	
+	public ResourceNotFoundException(String msg) {
+		super("Resource of: " + msg + " not found.");
+	}
+	
+	
+	public ResourceNotFoundException(String resource, String id) {
+		super("Resource " + resource +" "+ "with ID" + id + " not found.");
+	}
 
 }

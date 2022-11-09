@@ -1,9 +1,14 @@
 package com.cognixia.jump.controller;
 
+import java.util.Optional;
+
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cognixia.jump.exception.DuplicateResourceException;
 import com.cognixia.jump.model.User;
+import com.cognixia.jump.model.User.Role;
+import com.cognixia.jump.repository.UserRepository;
 import com.cognixia.jump.service.UserService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,6 +34,9 @@ public class UserController {
 
 	@Autowired
 	UserService service;
+	
+	@Autowired
+	UserRepository userRepo;
 
 
 	// CREATE
@@ -47,7 +57,21 @@ public class UserController {
 //	 summary -> brief description of API, description -> verbose description of API
 	@Operation(summary = "Gets all the users", description = "Gets all the users from the user table in the spring_db database...")
 	@GetMapping("/all")
+//	@RolesAllowed({"ROLE_ADMIN", "ROLE_USER"})
 	public ResponseEntity<?> getAllUsers() {
+Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+ 		Role role = Role.ROLE_USER;
+		
+		if (principal instanceof UserDetails) {
+
+		 Optional<User> currentUser = userRepo.findByUsername(((UserDetails)principal).getUsername());
+		 if(currentUser.get().getRole().equals(role)) {
+			 return ResponseEntity.status(200).body(getUserById(currentUser.get().getId()));
+			 
+		 } 
+		}
+		
 		return ResponseEntity.status(200).body(service.getAllUsers());
 	}
 
