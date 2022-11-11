@@ -33,30 +33,40 @@ public class OrderItemServiceImplementation implements OrderItemService {
 	UserRepository userRepo;
 
 //	@Override
-	public ResponseEntity<OrderItem> addProductToOrderItem(Long pid, int qty) throws ResourceNotFoundException, OutOfStockException {
+	public ResponseEntity<OrderItem> addProductToOrderItem(Long pid, int qty)
+			throws ResourceNotFoundException, OutOfStockException {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		String username = "";
-		
+
 		if (principal instanceof UserDetails) {
-		 username = ((UserDetails)principal).getUsername();
+			username = ((UserDetails) principal).getUsername();
 		} else {
-		 username = principal.toString();
+			username = principal.toString();
 		}
 		Optional<User> currentUser = userRepo.findByUsername(username);
 
 		Optional<Product> product = productRepo.findById(pid);
-		
-		if(qty > product.get().getQuantity()) {
-			
+
+		if (qty > product.get().getQuantity()) {
+
 			throw new OutOfStockException(product.get().getName() + " is out of stock ");
 		}
-		
-		qty *=  product.get().getPrice();
-		
 
 		if ((currentUser.isPresent() && product.isPresent())) {
+
+//			int qtyAval = product.get().getQuantity();
+//
+//			Product p = product.get();
+//			p.setQuantity(qtyAval - qty);
+//
+//			productRepo.save(p);
+			
+			product.get().setQuantity(product.get().getQuantity() - qty);
+
+			productRepo.save(product.get());
+
 			return ResponseEntity.status(201).body(
 					orderRepo.save(new OrderItem(pid, qty, new Date(), new Date(), currentUser.get(), product.get())));
 		}
